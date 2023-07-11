@@ -55,7 +55,7 @@ test_that("elev()", {
 
   # TODO JS to investigate:
   # elev.R:172   terra::writeRaster(srtm_mosaic, filename = file_path, [...]
-  # throes
+  # throws
   #  Error: [writeRaster] there are no cell values
   expect_snapshot(mz_elev <- elev(tmp_dir, island), cran = TRUE)
 
