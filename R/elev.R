@@ -123,7 +123,8 @@
 #' @importFrom sf as_Spatial st_geometry st_bbox st_is_longlat st_crs<-
 #' @importFrom terra rast extract xyFromCell mosaic writeRaster rast
 #' @export
-elev <- function(output_dir, location, e_source = "mapzen", ...) {
+elev <- function(output_dir, location, e_source = "mapzen",
+                 verbose = FALSE, ...) {
 
   e_source_id <- pmatch(tolower(e_source[1]), c("mapzen", "geodata"))
   if (is.na(e_source_id)) {
@@ -158,24 +159,19 @@ elev <- function(output_dir, location, e_source = "mapzen", ...) {
                recursive = TRUE, showWarnings = FALSE)
   }
 
+  file_path <- paste0(output_dir, "/elev/srtm.tif")
   # Saves elevation from geodata or mapzen sources
-  switch(e_source_id,
-         { # mapzen
-           srtm_mosaic <- terra::rast(
-             elevatr::get_elev_raster(
-               location_sf, z = 7, override_size_check = TRUE,
-               progress = FALSE
-             )
-           )
-           file_path <- paste0(output_dir, "/elev/srtm.tif")
-           terra::writeRaster(srtm_mosaic, filename = file_path,
-                              overwrite = TRUE)
-         },
-         { # geodata
-           srtm_mosaic <- .elev_geodata(location_sf, output_dir, ...)
-           file_path <- paste0(output_dir, "/elev/srtm.tif")
-           terra::writeRaster(srtm_mosaic, filename = file_path,
-                              overwrite = TRUE)
-         }
+  switch(e_source_id, { # mapzen
+    elev_raster <- elevatr::get_elev_raster(
+      location_sf, z = 7, override_size_check = TRUE,
+      progress = verbose, verbose = verbose
+    )
+    srtm_mosaic <- terra::rast(elev_raster)
+    terra::writeRaster(srtm_mosaic, filename = file_path,
+                       overwrite = TRUE)
+    }, { # geodata
+      srtm_mosaic <- .elev_geodata(location_sf, output_dir, ...)
+      terra::writeRaster(srtm_mosaic, filename = file_path, overwrite = TRUE)
+    }
   )
 }
