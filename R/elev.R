@@ -79,6 +79,8 @@
 #' @template output_dir_param
 #' @template output_location_param
 #' @template output_e_source_param
+#' @param verbose Logical specifying whether to display verbose output when
+#' downloading from Mapzen.
 #' @param \dots Additional arguments to [`download.file()`].
 #'
 #' @return
@@ -100,7 +102,7 @@
 #' https://CRAN.R-project.org/package=geodata
 #'
 #' Hollister, J. (2022). elevatr: Access Elevation Data from Various
-#' APIs. R package version 0.4.2. \doi{10.5281/zenodo.5809645}
+#' APIs. R package version 1.0.0. \doi{10.5281/zenodo.5809645}
 #' https://CRAN.R-project.org/package=elevatr
 #'
 #' Mouratidis, A., & Ampatzidis, D. (2019). European Digital Elevation Model
